@@ -1,0 +1,85 @@
+.lab-container {
+  padding: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.lab-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #222;
+}
+
+.task-card {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.task-card h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #444;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.input-row input {
+  padding: 6px 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  outline: none;
+  width: 120px;
+  transition: border 0.2s;
+}
+
+.input-row input:focus {
+  border-color: #4a90e2;
+}
+
+.input-row button {
+  padding: 6px 14px;
+  background: #4a90e2;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.input-row button:hover {
+  background: #357abd;
+}
+
+.result-block {
+  margin-top: 15px;
+}
+
+.result-block table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.result-block th,
+.result-block td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.result-block th {
+  background: #f0f0f0;
+  font-weight: 600;
+}
