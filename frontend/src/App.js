@@ -1,11 +1,9 @@
-import FortuneWheel from "./Components/Lab1/FortuneWheel";
-import Lab1 from "./Components/Lab1/Lab1";
+import Lab2 from "./Components/Lab2/Lab2";
 
 function App() {
   return (
     <div className="App">
-      <Lab1 />
-      <FortuneWheel />
+      <Lab2 />
     </div>
   );
 }
