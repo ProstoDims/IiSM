@@ -3,6 +3,8 @@
   font-family: "Segoe UI", Arial, sans-serif;
   background: #f9f9f9;
   color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .lab-title {
@@ -66,6 +68,7 @@ button {
   cursor: pointer;
   font-size: 14px;
   transition: background 0.2s;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -81,13 +84,20 @@ button:hover {
 }
 
 .result-section {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.result-section:last-child {
+  border-bottom: none;
 }
 
 .result-section h4 {
   margin-top: 0;
   margin-bottom: 10px;
   color: #333;
+  font-size: 16px;
 }
 
 .result-block table {
@@ -110,4 +120,10 @@ button:hover {
 
 .result-block p {
   margin: 5px 0;
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
 }
