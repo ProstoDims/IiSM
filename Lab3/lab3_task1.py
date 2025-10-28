@@ -33,20 +33,13 @@ f_xy_vec = np.vectorize(f_xy)
 def generate_sample_2d(size=10000):
     """Генерация выборки двумерной НСВ методом отклонения"""
     samples = []
-
-    # Ограничивающий прямоугольник: [-2, 2] × [-2, 2]
-    # Максимальное значение плотности в центре (0,0)
     f_max = f_xy(0, 0)
 
     while len(samples) < size:
-        # Генерируем кандидата в ограничивающем прямоугольнике
         x_candidate = np.random.uniform(-2, 2)
         y_candidate = np.random.uniform(-2, 2)
-
-        # Генерируем равномерную случайную величину для сравнения
         u = np.random.uniform(0, f_max)
 
-        # Принимаем кандидата, если u <= f(x,y)
         if u <= f_xy(x_candidate, y_candidate):
             samples.append([x_candidate, y_candidate])
 
@@ -61,19 +54,12 @@ x_sample = sample[:, 0]
 y_sample = sample[:, 1]
 
 print(f"Размер выборки: {sample_size}")
-print(
-    f"X: min={x_sample.min():.3f}, max={x_sample.max():.3f}, mean={x_sample.mean():.3f}"
-)
-print(
-    f"Y: min={y_sample.min():.3f}, max={y_sample.max():.3f}, mean={y_sample.mean():.3f}"
-)
 
 # 1. Проверка составляющих на независимость
 print("\n1. ПРОВЕРКА СОСТАВЛЯЮЩИХ НА НЕЗАВИСИМОСТЬ:")
 correlation = np.corrcoef(x_sample, y_sample)[0, 1]
 print(f"   Выборочный коэффициент корреляции: {correlation:.6f}")
 
-# Тест на независимость
 stat, p_value = stats.pearsonr(x_sample, y_sample)
 print(f"   p-value теста корреляции: {p_value:.6f}")
 if p_value < 0.05:
@@ -102,17 +88,9 @@ ax1.hist(
     edgecolor="navy",
     linewidth=0.5,
 )
-ax1.axvline(
-    x_conditional.mean(),
-    color="red",
-    linestyle="--",
-    linewidth=2,
-    label=f"Среднее: {x_conditional.mean():.3f}",
-)
 ax1.set_xlabel("X")
 ax1.set_ylabel("Плотность")
 ax1.set_title(f"Условное распределение X|Y≈{y_condition}")
-ax1.legend()
 ax1.grid(True, alpha=0.3)
 
 # Условное распределение Y|X
@@ -130,28 +108,13 @@ ax2.hist(
     edgecolor="darkred",
     linewidth=0.5,
 )
-ax2.axvline(
-    y_conditional.mean(),
-    color="red",
-    linestyle="--",
-    linewidth=2,
-    label=f"Среднее: {y_conditional.mean():.3f}",
-)
 ax2.set_xlabel("Y")
 ax2.set_ylabel("Плотность")
 ax2.set_title(f"Условное распределение Y|X≈{x_condition}")
-ax2.legend()
 ax2.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
-
-print(
-    f"   Условная при Y≈0: {len(x_conditional)} точек, mean={x_conditional.mean():.3f}"
-)
-print(
-    f"   Условная при X≈0: {len(y_conditional)} точек, mean={y_conditional.mean():.3f}"
-)
 
 # 3. Гистограммы составляющих и графики плотностей
 print("\n3. ГИСТОГРАММЫ СОСТАВЛЯЮЩИХ И ГРАФИКИ ПЛОТНОСТЕЙ:")
@@ -209,7 +172,7 @@ ax2.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# 4. 3D гистограмма распределения и график плотности (дополнительное)
+# 4. 3D гистограмма распределения и график плотности
 print("\n4. 3D ГИСТОГРАММА РАСПРЕДЕЛЕНИЯ И ГРАФИК ПЛОТНОСТИ:")
 
 fig = plt.figure(figsize=(15, 6))
@@ -267,19 +230,18 @@ mean_x = np.mean(x_sample)
 mean_y = np.mean(y_sample)
 var_x = np.var(x_sample, ddof=1)
 var_y = np.var(y_sample, ddof=1)
-std_x = np.std(x_sample, ddof=1)
-std_y = np.std(y_sample, ddof=1)
 
 print(f"   E[X] = {mean_x:.6f}")
 print(f"   E[Y] = {mean_y:.6f}")
 print(f"   D[X] = {var_x:.6f}")
 print(f"   D[Y] = {var_y:.6f}")
-print(f"   σ[X] = {std_x:.6f}")
-print(f"   σ[Y] = {std_y:.6f}")
 print(f"   ρ(X,Y) = {correlation:.6f}")
 
 # Интервальные оценки (95% доверительные интервалы)
 print("\n   Интервальные оценки (95% доверительный интервал):")
+
+std_x = np.std(x_sample, ddof=1)
+std_y = np.std(y_sample, ddof=1)
 
 # Для математического ожидания
 ci_mean_x = stats.t.interval(
@@ -304,7 +266,7 @@ print(f"   E[Y] ∈ [{ci_mean_y[0]:.6f}, {ci_mean_y[1]:.6f}]")
 print(f"   D[X] ∈ [{ci_var_x[0]:.6f}, {ci_var_x[1]:.6f}]")
 print(f"   D[Y] ∈ [{ci_var_y[0]:.6f}, {ci_var_y[1]:.6f}]")
 
-# 6. Проверка статистических гипотез (дополнительное)
+# 6. Проверка статистических гипотез
 print("\n6. ПРОВЕРКА СТАТИСТИЧЕСКИХ ГИПОТЕЗ:")
 
 # Проверка гипотезы о математическом ожидании (H0: μ = 0)
@@ -325,29 +287,6 @@ if p_value > 0.05:
     print("   Не отвергаем H0: корреляция равна 0")
 else:
     print("   Отвергаем H0: корреляция не равна 0")
-
-# Проверка гипотезы о дисперсии (H0: σ² = 0.67)
-# Используем F-тест для сравнения с теоретической дисперсией
-print(f"\n   Проверка гипотезы о дисперсии (H0: σ² = 0.67):")
-f_stat_x = (len(x_sample) - 1) * var_x / 0.67
-p_value_var_x = 2 * min(
-    stats.f.cdf(f_stat_x, len(x_sample) - 1, len(x_sample) - 1),
-    1 - stats.f.cdf(f_stat_x, len(x_sample) - 1, len(x_sample) - 1),
-)
-
-f_stat_y = (len(y_sample) - 1) * var_y / 0.67
-p_value_var_y = 2 * min(
-    stats.f.cdf(f_stat_y, len(y_sample) - 1, len(y_sample) - 1),
-    1 - stats.f.cdf(f_stat_y, len(y_sample) - 1, len(y_sample) - 1),
-)
-
-print(f"   Для D[X]: F={f_stat_x:.4f}, p-value={p_value_var_x:.6f}")
-print(f"   Для D[Y]: F={f_stat_y:.4f}, p-value={p_value_var_y:.6f}")
-
-if p_value_var_x > 0.05 and p_value_var_y > 0.05:
-    print("   Не отвергаем H0: дисперсии соответствуют теоретическим")
-else:
-    print("   Отвергаем H0: дисперсии не соответствуют теоретическим")
 
 print("\n" + "=" * 60)
 print("ЗАДАНИЕ 1 ВЫПОЛНЕНО!")
